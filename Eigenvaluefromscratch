@@ -1,81 +1,83 @@
-// Online C compiler to run C program online
 #include <stdio.h>
 #include <complex.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <math.h>
 
-double SQRT(int N,int Tol){
-    
-    double x=N;
-    
+double SQRT(int N, float Tol) {
+    double x = N;
     double root;
-    
-    int count=0;
-    
-    
-    while(1){
+    int count = 0;
+
+    while (1) {
         count++;
-        root = 0.5*(x+(N/x));
-        
-        if (abs(root-x)<Tol){
+        root = 0.5 * (x + (N / x));
+
+        if (fabs(root - x) < Tol) {
             break;
         }
-        
-        x=root;
-        
+
+        x = root;
     }
-    
-    
+
+    return root;
 }
 
-double MMULN(int M[2][2],double B[2]){
-  
-  double EV[2];
-  int i,j,ni;
-  double N;
-  
-  for (i=0;i<2;i++){
-    for (j=0;j<2;j++){
-      EV[i]=M[i][j]*B[j]+M[i][j]*B[j];
-    }
-  }
-  
-  for (ni=0;ni<2;ni++){
-    N=EV[ni]*EV[ni]
+double ABS(double N){
     
-  }
- 
-  
- 
-  
-  
-  
-
-  
+    if (N>0)
+     return N;
+    else 
+     return -N;
 }
 
+double* MMULN(int M[2][2], double B[2]) {
+    // Dynamically allocate EV to return it
+    double* EV = (double*)malloc(2 * sizeof(double));
+    if (EV == NULL) {
+        return NULL; // Memory allocation check
+    }
 
+    int i, j, ni;
+    double N = 0.0;
 
+    // Matrix-vector multiplication
+    for (i = 0; i < 2; i++) {
+        EV[i] = 0;
+        for (j = 0; j < 2; j++) {
+            EV[i] += M[i][j] * B[j];
+        }
+    }
 
+    // Calculate the norm
+    for (ni = 0; ni < 2; ni++) {
+        N += EV[ni] * EV[ni];
+    }
+
+    // Normalize EV
+    for (ni = 0; ni < 2; ni++) {
+        EV[ni] /= SQRT(N,0.01);
+    }
+
+    return EV;
+}
 
 int main() {
-    // Write C code here
-    printf("Try programiz.pro");
-    
-   double complex z1 = 4.0 * I;
-    
-   int M[2][2];
-   M[0][1]=2;
-   M[0][1]=2;
-   M[0][1]=2;
-   M[0][1]=2;
-   
-  
-   
-   
-   
-   
-   
-   printf("The first number is %d",M[0][1]);
+    printf("Try programiz.pro\n");
+
+    int M[2][2] = {
+        {0, 1},
+        {1, 0}
+    };
+    double B[2] = {1, -1};
+
+    double* EVv = MMULN(M, B);
+
+    if (EVv != NULL) {
+        printf("The final result is [%f, %f]\n", EVv[0], EVv[1]);
+        free(EVv); // Free allocated memory
+    } else {
+        printf("Memory allocation failed.\n");
+    }
 
     return 0;
 }
