@@ -1,0 +1,39 @@
+/* 
+ * Do not change Module name 
+*/
+module main;
+  // Declare input and output wires
+  reg x; // Input x
+  reg y; // Input y
+  wire z; // Output z
+
+  // AND gate implementation
+  assign z = x & y; // Perform AND operation
+
+  initial 
+    begin
+      // Test the AND gate
+      // Case 1: x = 0, y = 0
+      x = 0; y = 0;
+      #1; // Wait for 1 time unit
+      $display("x=%b, y=%b, z=%b", x, y, z); // Expected output: 0
+      
+      // Case 2: x = 0, y = 1
+      x = 0; y = 1;
+      #1; // Wait for 1 time unit
+      $display("x=%b, y=%b, z=%b", x, y, z); // Expected output: 0
+
+      // Case 3: x = 1, y = 0
+      x = 1; y = 0;
+      #1; // Wait for 1 time unit
+      $display("x=%b, y=%b, z=%b", x, y, z); // Expected output: 0
+
+      // Case 4: x = 1, y = 1
+      x = 1; y = 1;
+      #1; // Wait for 1 time unit
+      $display("x=%b, y=%b, z=%b", x, y, z); // Expected output: 1
+
+      // Finish simulation
+      $finish;
+    end
+endmodule
