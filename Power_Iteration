@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <complex.h>
+#include <stdlib.h>
+#include <math.h>
+
+double SQRT(int N, float Tol) {
+    double x = N;
+    double root;
+    int count = 0;
+
+    while (1) {
+        //count++;
+        root = 0.5 * (x + (N / x));
+
+        if (fabs(root - x) < Tol) {
+            break;
+        }
+
+        x = root;
+    }
+
+    return root;
+}
+
+double ABS(double N){
+    
+    if (N>0)
+     return N;
+    else 
+     return -N;
+}
+
+double* MMULN(int M[2][2], double B[2]) {
+    // Dynamically allocate EV to return it
+    double* EV = (double*)malloc(2 * sizeof(double));
+    if (EV == NULL) {
+        return NULL; // Memory allocation check
+    }
+
+    int i, j, ni;
+    double N = 0.0;
+
+    // Matrix-vector multiplication
+    for (i = 0; i < 2; i++) {
+        EV[i] = 0;
+        for (j = 0; j < 2; j++) {
+            EV[i] += M[i][j] * B[j];
+        }
+    }
+
+    // Calculate the norm
+    for (ni = 0; ni < 2; ni++) {
+        N += EV[ni] * EV[ni];
+    }
+
+    // Normalize EV
+    for (ni = 0; ni < 2; ni++) {
+        EV[ni] /= SQRT(N,0.01);
+    }
+
+    return EV;
+}
+
+double* PI(int M[2][2], double B[2], double Tol){
+    
+    //double B1[2];
+    printf("Try 3 programiz.pro\n");
+    double* IEV = (double*)malloc(2*sizeof(double));
+    int i=0;
+    
+    
+    while(1){
+        for (i=0;i<2;i++){
+             B[i]+=0.1;
+        } //for loop
+             IEV= MMULN(M,B);
+             
+             if (ABS(B[1]-IEV[1]||B[2]-IEV[2])<Tol ){
+                 break;
+             }
+             
+             IEV=B;
+    }//while loop
+    
+    return IEV;
+    
+     printf("Try 3 programiz.pro\n");
+}
+
+
+
+
+
+int main() {
+    printf("Try programiz.pro\n");
+
+    int M[2][2] = {
+        {0, 1},
+        {1, 0}
+    };
+    double B[2] = {1, -1};
+
+    double* EVv = MMULN(M, B);
+    
+     printf("Try 1 programiz.pro\n");
+    double* EIv = PI(M, B,0.5);
+     printf("Try 1 programiz.pro\n");
+    if (EVv != NULL) {
+        printf("The final result is [%f, %f]\n", EVv[0], EVv[1]);
+        free(EVv); // Free allocated memory
+    } else {
+        printf("Memory allocation failed.\n");
+    }
+    
+    printf("The eigen vecotor is [%f,%f] \n",EIv[0],EIv[1]);
+    
+    
+
+    return 0;
+}
